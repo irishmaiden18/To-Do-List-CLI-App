@@ -2,7 +2,6 @@
 
 Built a to-do list app for the command-line using JavaScript.
 
-## Screen Shot
 ![desktop website view](https://github.com/irishmaiden18/TODO_CLI/blob/main/to-do-list-app_desktop.jpg)
 
 
