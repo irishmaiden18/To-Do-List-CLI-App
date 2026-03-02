@@ -1,12 +1,10 @@
-todo item - keep track of the name of the task AND if the task is completed or not
-todo: {
-    name: string
-    completed: boolean
-}
-
-todoList - [todo]
-
 ToDo List CLI Project!
+
+CRUD Application                         REST method
+    CREATE - add new data                POST
+    READ - view your data                GET                  
+    UPDATE - edit existing data          PUT 
+    DELETE - remove data                 DELETE
 
 Write a program that allows a user to add different tasks to a list.
 The tasks added are going to have an attached status to signify if the task has been completed or not

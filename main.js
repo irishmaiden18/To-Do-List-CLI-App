@@ -50,18 +50,18 @@ const displayList = () => {
 
 let choice = 0;
 
-while (choice !== 6) {
+while (choice !== 5) {
     console.log("\n-----------------------------------------\n");
 
     displayList()
 
     console.log("\n~ Select an action ~");
     console.log("1. Create a to-do item");
-    console.log("2. Complete a to-do item");
-    console.log("3. Uncomplete a to-do item")
-    console.log("4. Delete a to-do item from the list")
-    console.log("5. Edit existing to-do item")
-    console.log("6. Exit the program");
+    console.log("2. Toggle completeness of a to-do item");
+    // console.log("3. Uncomplete a to-do item")
+    console.log("3. Delete a to-do item from the list")
+    console.log("4. Edit existing to-do item")
+    console.log("5. Exit the program");
 
     choice = Number(prompt("> "));
 
@@ -72,11 +72,12 @@ while (choice !== 6) {
         // What is this to-do item called?
         console.log("What is this to-do item called?")
         // > Buy groceries
-        let input = prompt("> ")
+        //.trim removes leading and trailing spaces, so we can't just do spaces
+        let input = prompt("> ").trim()
 
         while(input == "") {
             console.log("Please enter a new task")
-            input = prompt(">")
+            input = prompt(">").trim()
         }
 
         let todoTask = {
@@ -88,80 +89,133 @@ while (choice !== 6) {
 
     } else if (choice === 2) {
 
-        // ~ Completing a to-do item ~
-        console.log("~ Completing a to-do item ~")
-        // Which to-do item would you like to complete?
-        console.log("Which to-do item would you like to complete?")
-        // > 2
-        let completedInput = Number(prompt("> "))
+        if (todoList.length === 0) {
+            console.log("Please add an item before trying to complete an item")
+        } else {
 
-        while(completedInput > todoList.length) {
-            console.log("Out of range:")
-            completedInput = Number(prompt(`Please enter a number between 1 & ${todoList.length}: `))
+            // ~ Completing a to-do item ~
+            console.log("~ Completing or uncompleting  a to-do item ~")
+            // Which to-do item would you like to complete?
+            console.log("Which to-do item would you like to complete or uncomplete?")
+            // > 2
+
+            //try catches programatic errors
+            try {
+                let num = Number(prompt("> "))
+
+                while((num > todoList.length) || (num <= 0)) {
+                    console.log("Out of range:")
+                    //on empty string, Number converts input to zero
+                    num = Number(prompt(`Please enter a number between 1 & ${todoList.length}: `))
+                }
+
+                // if(todoList[completedInput-1].completed === true) {
+                //     todoList[completedInput-1].completed = false
+                // } else {
+                //     todoList[completedInput-1].completed = true
+                // }
+
+                todoList[num - 1].completed = !todoList[num - 1].completed
+            } catch (error) {
+                console.log("Invalid Choice")
+            }
         }
 
-        todoList[completedInput -1].completed = true
+    // } else if (choice === 3) {
+    //     // console.log("Uncomplete a to-do item")
 
+    //     console.log("~ Uncompleting a to-do item ~")
+    //     console.log("Which to-do item would you like to uncomplete?")
+
+    //     let uncompletedInput = Number(prompt("> "))
+
+    //     while(uncompletedInput > todoList.length) {
+    //         console.log("Out of range:")
+    //         uncompletedInput = Number(prompt(`Please enter a number between 1 & ${todoList.length}: `))
+    //     }
+
+    //     todoList[uncompletedInput -1].completed = false
+
+    // } 
+    
     } else if (choice === 3) {
-        // console.log("Uncomplete a to-do item")
-
-        console.log("~ Uncompleting a to-do item ~")
-        console.log("Which to-do item would you like to uncomplete?")
-
-        let uncompletedInput = Number(prompt("> "))
-
-        while(uncompletedInput > todoList.length) {
-            console.log("Out of range:")
-            uncompletedInput = Number(prompt(`Please enter a number between 1 & ${todoList.length}: `))
-        }
-
-        todoList[uncompletedInput -1].completed = false
-
-    } else if (choice === 4) {
         // console.log("Delete a to-do item from the list")
 
-        console.log("~ Deleting a to-do item ~")
-        console.log("Which to-do item would you like to delete?")
+        if (todoList.length === 0) {
+            console.log("Please add an item before trying to delete an item")
+        } else {
 
-        let deleteInput = Number(prompt("> "))
+            console.log("~ Deleting a to-do item ~")
+            console.log("Which to-do item would you like to delete?")
 
-        while(deleteInput > todoList.length) {
-            console.log("Out of range:")
-            deleteInput = Number(prompt(`Please enter a number between 1 & ${todoList.length}: `))
+            try {
+
+                let num = Number(prompt("> "))
+
+                while(num > todoList.length) {
+                    console.log("Out of range:")
+                    num = Number(prompt(`Please enter a number between 1 & ${todoList.length}: `))
+                }
+
+                let tempArray = []
+
+                for (let i = 0; i < todoList.length; i++) {
+                    
+                    if (i !== num - 1) {
+                        tempArray.push(todoList[i])
+                    } else {
+                        console.log (`${todoList[i].name} successfully deleted`)
+                    }
+                } 
+                
+                todoList = tempArray
+
+                //could also do it with splice:
+                    // .splice(startingIndex, deleteCount) - let's you remove item(s) from your array (will modify the original array)
+                    // startingIndex - where in the array to start the delete process
+                    // deleteCount - how many items you want to delete
+                //let removed = todoList.splice(num-1,1)
+                //console.log(`${removed[0].name} successfully deleted`)
+                //todoList.splice(num-1,1)
+                
+            } catch (error) {
+                console.log("Invalid Choice")
+            }
         }
 
-        let tempArray = []
-
-        for (let i = 0; i < todoList.length; i++) {
-            
-            if (i !== deleteInput - 1) {
-                tempArray.push(todoList[i])
-            }
-        } 
-        
-        todoList = tempArray
-
-    } else if (choice === 5) {
+    } else if (choice === 4) {
         // console.log("Edit existing to-do item")
 
-        console.log("~ Editing an existing to-do item ~")
-        console.log("Which to-do item would you like to edit?")
+        if (todoList.length === 0) {
+            console.log("Please add an item before trying to edit an item")
+        } else {
+        
+            console.log("~ Editing an existing to-do item ~")
+            console.log("Which to-do item would you like to edit?")
 
-        let editInput = Number(prompt("> "))
+            try {
 
-        while(editInput > todoList.length) {
-            console.log("Out of range:")
-            editInput = Number(prompt(`Please enter a number between 1 & ${todoList.length}: `))
+                let num = Number(prompt("> "))
+
+                while(num > todoList.length) {
+                    console.log("Out of range:")
+                    num = Number(prompt(`Please enter a number between 1 & ${todoList.length}: `))
+                }
+
+                console.log("What would you like the to-do item to be?")
+                let newText = prompt("> ") 
+                while(newText === "") {
+                    newText = prompt("Please enter some text: ")
+                }
+                todoList[num - 1].name = newText
+                console.log("Task successfully edited!")
+
+            } catch (error) {
+                console.log("Invalid Choice")
+            }
         }
 
-        console.log("What would you like the to-do item to be?")
-        let newText = prompt("> ") 
-        while(newText === "") {
-            newText = prompt("Please enter some text: ")
-        }
-        todoList[editInput-1].name = newText
-
-    } else if (choice === 6) {
+    } else if (choice === 5) {
         console.log("Exit");
     } else {
         console.log("Invalid option");
