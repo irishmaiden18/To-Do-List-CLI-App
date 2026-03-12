@@ -1,4 +1,5 @@
 
+//npm i prompt-sync
 const prompt = require("prompt-sync")({ sigint: true })
 
 //npm i chalk@4.1.2, use the older version because of a compatibility issue with the newer version
