@@ -1,6 +1,10 @@
 
 const prompt = require("prompt-sync")({ sigint: true })
 
+//npm i chalk@4.1.2, use the older version because of a compatibility issue with the newer version
+//lets you change colors and styles of terminal text
+const chalk = require("chalk")
+
 console.log("\nWelcome to the ToDo List App!\n")
 // console.log("-----------------------------------------\n")
 // console.log("~ Select an action ~")
@@ -37,13 +41,15 @@ const displayList = () => {
 
             if (todoList[i].completed === true) {
             // complete
-            status = "[complete]";
+            status = "[complete]"
+            console.log(`${i + 1}. ${status} ` + chalk.strikethrough(`${todoList[i].name}`))
             } else {
             // incomplete
-            status = "[incomplete]";
+            status = "[incomplete]"
+            console.log(`${i + 1}. ${status} ${todoList[i].name}`)
             }
 
-            console.log(`${i + 1}. ${status} ${todoList[i].name}`);
+            // console.log(`${i + 1}. ${status} ${todoList[i].name}`);
         }
     }
 };
@@ -51,7 +57,7 @@ const displayList = () => {
 let choice = 0;
 
 while (choice !== 5) {
-    console.log("\n-----------------------------------------\n");
+    console.log("\n-------------------------------------------------------------------\n");
 
     displayList()
 
